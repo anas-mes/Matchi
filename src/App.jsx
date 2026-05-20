@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import './App.css'
 
 import Navbar from './components/Navbar'
 
@@ -35,7 +36,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="app-shell">
       {user && <Navbar onLogout={handleLogout} />}
 
       <Routes>
@@ -45,7 +46,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/add-match" element={<AddMatch />} />
       </Routes>
-    </>
+    </div>
   )
 }
 

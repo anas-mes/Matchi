@@ -93,103 +93,127 @@ function Home({ user, onUserUpdate }) {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white flex items-center justify-center px-6">
-        <div className="max-w-md w-full bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-white/10">
-          <h1 className="text-3xl font-bold text-center mb-6">Welcome to Matchi</h1>
-
-          <div className="flex justify-center gap-2 mb-6">
-            <button
-              className={`px-5 py-2 rounded-full ${mode === 'login' ? 'bg-orange-500 text-white' : 'bg-white/10 text-white'}`}
-              onClick={() => setMode('login')}
-              type="button"
-            >
-              Login
-            </button>
-            <button
-              className={`px-5 py-2 rounded-full ${mode === 'register' ? 'bg-orange-500 text-white' : 'bg-white/10 text-white'}`}
-              onClick={() => setMode('register')}
-              type="button"
-            >
-              Register
-            </button>
+      <main className="page page--hero">
+        <section className="hero-panel">
+          <div className="hero-copy">
+            <span className="eyebrow">Welcome to Matchi</span>
+            <h1 className="hero-title">Find local football matches and connect with players.</h1>
+            <p className="hero-description">
+              Sign in or register to create and manage your profile, upload a picture, and join games nearby.
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              className="w-full rounded-2xl px-4 py-3 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              required
-            />
-            <input
-              className="w-full rounded-2xl px-4 py-3 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {mode === 'register' && (
-              <>
-                <input
-                  className="w-full rounded-2xl px-4 py-3 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
-                  placeholder="Full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                />
-
-                <textarea
-                  className="w-full rounded-2xl px-4 py-3 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
-                  placeholder="Short bio"
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                />
-
-                <input
-                  className="w-32 rounded-2xl px-3 py-2 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
-                  placeholder="Age"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  type="number"
-                />
-
-                <div>
-                  <label className="block text-sm mb-1">Avatar (optional)</label>
-                  <input type="file" accept="image/*" onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)} />
-                </div>
-              </>
-            )}
-            <button
-              type="submit"
-              className="w-full rounded-2xl bg-orange-500 py-3 font-semibold text-white hover:bg-orange-600"
-              disabled={loading}
-            >
-              {loading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Create account'}
-            </button>
-          </form>
-
-          {statusMessage && (
-            <div className="mt-4 text-center text-sm text-white/80">
-              {statusMessage}
+          <div className="auth-shell">
+            <div className="auth-switch">
+              <button
+                className={`button ${mode === 'login' ? 'button-primary' : 'button-secondary'}`}
+                type="button"
+                onClick={() => setMode('login')}
+              >
+                Login
+              </button>
+              <button
+                className={`button ${mode === 'register' ? 'button-primary' : 'button-secondary'}`}
+                type="button"
+                onClick={() => setMode('register')}
+              >
+                Register
+              </button>
             </div>
-          )}
-        </div>
-      </div>
+
+            <form className="form-card" onSubmit={handleSubmit}>
+              <div className="form-field">
+                <label>Email</label>
+                <input
+                  className="input"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  required
+                />
+              </div>
+
+              <div className="form-field">
+                <label>Password</label>
+                <input
+                  className="input"
+                  placeholder="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              {mode === 'register' && (
+                <>
+                  <div className="form-field">
+                    <label>Full name</label>
+                    <input
+                      className="input"
+                      placeholder="Full name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      type="text"
+                    />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Short bio</label>
+                    <textarea
+                      className="textarea"
+                      placeholder="Tell others about yourself"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="form-field form-field--small">
+                    <label>Age</label>
+                    <input
+                      className="input"
+                      placeholder="Age"
+                      type="number"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Avatar (optional)</label>
+                    <input
+                      className="file-input"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)}
+                    />
+                  </div>
+                </>
+              )}
+
+              <button className="button button-primary button-full" type="submit" disabled={loading}>
+                {loading ? 'Please wait…' : mode === 'login' ? 'Login' : 'Create account'}
+              </button>
+
+              {statusMessage && <div className="status-message">{statusMessage}</div>}
+            </form>
+          </div>
+        </section>
+      </main>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white flex flex-col">
-      <main className="flex-1 flex flex-col items-center justify-center text-center px-6">
-        <h1 className="text-4xl font-bold mb-4">Welcome back, {user.email}</h1>
-        <p className="text-white/70 max-w-xl mb-8">
-          You are now logged in. Use the navigation bar to add matches, see your profile, and manage your games.
+    <main className="page page--centered">
+      <section className="hero-panel hero-panel--small">
+        <span className="eyebrow">Welcome back</span>
+        <h1 className="hero-title">Hello, {user.email}</h1>
+        <p className="hero-description">
+          You are logged in. Use the navigation bar to add matches, update your profile, and view your games.
         </p>
-      </main>
-    </div>
+      </section>
+    </main>
   )
 }
 

@@ -2,14 +2,17 @@ import { Link } from 'react-router-dom'
 
 function Navbar({ onLogout }) {
   return (
-    <nav style={{ display: 'flex', gap: '10px' }}>
-      <Link to="/">Home</Link>
-      <Link to="/add-match">Add Match</Link>
-      <Link to="/profile">Profile</Link>
-      <button type="button" onClick={onLogout} style={{ cursor: 'pointer' }}>
-        Logout
-      </button>
-    </nav>
+    <header className="navbar">
+      <div className="navbar__brand">Matchi</div>
+      <nav className="navbar__links">
+        <Link to="/">Home</Link>
+        <Link to="/add-match">Add Match</Link>
+        <Link to="/profile">Profile</Link>
+        <button type="button" className="button button-secondary" onClick={onLogout}>
+          Logout
+        </button>
+      </nav>
+    </header>
   )
 }
 
