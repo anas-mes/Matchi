@@ -1,10 +1,19 @@
 import { useState } from 'react'
-import { loginWithPassword, registerUser } from '../services/supabaseService'
+import {
+  loginWithPassword,
+  registerUser,
+  uploadProfileImage,
+  updateProfile,
+} from '../services/supabaseService'
 
 function Home({ user, onUserUpdate }) {
   const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [bio, setBio] = useState('')
+  const [age, setAge] = useState('')
+  const [avatarFile, setAvatarFile] = useState(null)
   const [statusMessage, setStatusMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -24,15 +33,58 @@ function Home({ user, onUserUpdate }) {
         onUserUpdate?.(loggedUser)
       }
     } else {
+      // Registration flow: create auth user, then create profile row and upload avatar
       const { data, error } = await registerUser(email, password)
 
       if (error) {
         setStatusMessage(error.message)
       } else {
-        setStatusMessage('Registration successful! Please log in.')
-        setMode('login')
-        setEmail('')
-        setPassword('')
+        const userId = data?.user?.id ?? data?.session?.user?.id
+
+        if (!userId) {
+          setStatusMessage('Registration succeeded but no user id returned. Please check email confirmation.')
+          setMode('login')
+          setEmail('')
+          setPassword('')
+          setName('')
+          setBio('')
+          setAge('')
+          setAvatarFile(null)
+        } else {
+          let avatarUrl = null
+          if (avatarFile) {
+            const { data: uploadData, error: uploadError } = await uploadProfileImage(userId, avatarFile)
+            if (uploadError) {
+              console.warn('Avatar upload failed (continuing anyway):', uploadError.message)
+              // Don't stop registration if avatar fails — it's optional
+            } else {
+              avatarUrl = uploadData
+              console.log('Avatar uploaded:', avatarUrl)
+            }
+          }
+
+          const updates = {
+            email,
+            name,
+            bio,
+            age: age ? Number(age) : null,
+            avatar_url: avatarUrl,
+          }
+
+          const { data: profileData, error: profileError } = await updateProfile(userId, updates)
+          if (profileError) {
+            setStatusMessage(profileError.message)
+          } else {
+            setStatusMessage('Registration successful! Please log in.')
+            setMode('login')
+            setEmail('')
+            setPassword('')
+            setName('')
+            setBio('')
+            setAge('')
+            setAvatarFile(null)
+          }
+        }
       }
     }
 
@@ -79,6 +131,37 @@ function Home({ user, onUserUpdate }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {mode === 'register' && (
+              <>
+                <input
+                  className="w-full rounded-2xl px-4 py-3 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
+                  placeholder="Full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  type="text"
+                />
+
+                <textarea
+                  className="w-full rounded-2xl px-4 py-3 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
+                  placeholder="Short bio"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                />
+
+                <input
+                  className="w-32 rounded-2xl px-3 py-2 bg-white/10 border border-white/10 text-white placeholder:text-white/70"
+                  placeholder="Age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  type="number"
+                />
+
+                <div>
+                  <label className="block text-sm mb-1">Avatar (optional)</label>
+                  <input type="file" accept="image/*" onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)} />
+                </div>
+              </>
+            )}
             <button
               type="submit"
               className="w-full rounded-2xl bg-orange-500 py-3 font-semibold text-white hover:bg-orange-600"
