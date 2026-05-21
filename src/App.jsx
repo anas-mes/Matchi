@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import './App.css'
 
 import Navbar from './components/Navbar'
@@ -9,7 +9,6 @@ import Matches from './pages/Matches'
 import Explorer from './pages/Explorer'
 import Recruitment from './pages/Recruitment'
 import Profile from './pages/Profile'
-import AddMatch from './pages/AddMatch'
 
 
 
@@ -39,8 +38,12 @@ function App() {
     return () => authListener?.subscription?.unsubscribe()
   }, [])
 
+  const navigate = useNavigate()
+
   const handleLogout = async () => {
     await signOut()
+    setUser(null)
+    navigate('/')
   }
 
   return (
@@ -53,7 +56,6 @@ function App() {
         <Route path="/explorer" element={<Explorer />} />
         <Route path="/recruitment" element={<Recruitment />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/add-match" element={<AddMatch />} />
         <Route path="/login" element={<Navigate to="/" replace />} />
         <Route path="/register" element={<Navigate to="/" replace />} />
       </Routes>

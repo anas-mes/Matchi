@@ -8,7 +8,6 @@ function Navbar({ onLogout }) {
         <Link to="/matches">Matches</Link>
         <Link to="/explorer">Explorer</Link>
         <Link to="/recruitment">Recruitment</Link>
-        <Link to="/add-match">Add Match</Link>
         <Link to="/profile">Profile</Link>
         <button type="button" className="button button-secondary" onClick={onLogout}>
           Logout

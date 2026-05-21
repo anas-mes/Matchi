@@ -210,7 +210,7 @@ function Home({ user, onUserUpdate }) {
         <span className="eyebrow">Welcome back</span>
         <h1 className="hero-title">Hello, {user.email}</h1>
         <p className="hero-description">
-          You are logged in. Use the navigation bar to add matches, update your profile, and view your games.
+          You are logged in. Use the navigation bar to browse matches, update your profile, and view your games.
         </p>
       </section>
     </main>

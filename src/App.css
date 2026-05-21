@@ -192,6 +192,25 @@ label {
   width: 100%;
 }
 
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 15;
+  border-radius: 999px;
+  padding: 18px 24px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #8b5cf6, #f97316);
+  color: #ffffff;
+  box-shadow: 0 20px 40px rgba(248, 113, 33, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.fab:hover {
+  transform: translateY(-2px);
+}
+
 .status-message {
   color: #cbd5e1;
   font-size: 0.95rem;
