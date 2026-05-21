@@ -5,8 +5,16 @@ import './App.css'
 import Navbar from './components/Navbar'
 
 import Home from './pages/Home'
+import Matches from './pages/Matches'
+import Explorer from './pages/Explorer'
+import Recruitment from './pages/Recruitment'
 import Profile from './pages/Profile'
 import AddMatch from './pages/AddMatch'
+
+
+
+
+
 import {
   getCurrentUser,
   onAuthStateChange,
@@ -41,10 +49,13 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home user={user} onUserUpdate={setUser} />} />
-        <Route path="/login" element={<Navigate to="/" replace />} />
-        <Route path="/register" element={<Navigate to="/" replace />} />
+        <Route path="/matches" element={<Matches />} />
+        <Route path="/explorer" element={<Explorer />} />
+        <Route path="/recruitment" element={<Recruitment />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/add-match" element={<AddMatch />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="/register" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   )
