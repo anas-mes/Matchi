@@ -82,3 +82,117 @@ export async function updateProfile(userId, updates) {
   console.log('updateProfile result:', result)
   return result
 }
+
+// --- Friends & Squads (stubs) ---
+export async function fetchFriendRequests(userId) {
+  if (!userId) return { data: [], error: null }
+
+  try {
+    return await supabase
+      .from('friends')
+      .select('*')
+      .or(`requested_id.eq.${userId},requester_id.eq.${userId}`)
+      .order('created_at', { ascending: false })
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function sendFriendRequest(requestedId) {
+  try {
+    const { data, error } = await supabase.from('friends').insert({ requester_id: (await supabase.auth.getUser()).data.user.id, requested_id: requestedId, status: 'pending' }).select()
+    return { data, error }
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function acceptFriendRequest(id) {
+  try {
+    const { data, error } = await supabase.from('friends').update({ status: 'accepted' }).eq('id', id).select()
+    return { data, error }
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function removeFriend(id) {
+  try {
+    const { data, error } = await supabase.from('friends').delete().eq('id', id)
+    return { data, error }
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function fetchFriends(userId) {
+  if (!userId) return { data: [], error: null }
+
+  try {
+    return await supabase
+      .from('friends')
+      .select('*')
+      .or(`and(requester_id.eq.${userId},status.eq.accepted),and(requested_id.eq.${userId},status.eq.accepted)`)
+      .order('created_at', { ascending: false })
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function createSquad(ownerId, name, memberIds = []) {
+  try {
+    // create squad
+    const { data: squadData, error: squadError } = await supabase.from('squads').insert({ owner_id: ownerId, name }).select().single()
+    if (squadError) return { data: null, error: squadError }
+
+    const inserts = memberIds.map((user_id) => ({ squad_id: squadData.id, user_id }))
+    if (inserts.length > 0) {
+      const { data: membersData, error: membersError } = await supabase.from('squad_members').insert(inserts).select()
+      if (membersError) return { data: null, error: membersError }
+    }
+
+    return { data: squadData, error: null }
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function fetchUserSquads(userId) {
+  try {
+    return await supabase.from('squads').select('*').eq('owner_id', userId)
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function addSquadMember(squadId, userId) {
+  try {
+    return await supabase.from('squad_members').insert({ squad_id: squadId, user_id: userId }).select()
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function removeSquadMember(squadId, userId) {
+  try {
+    return await supabase.from('squad_members').delete().match({ squad_id: squadId, user_id: userId })
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
+
+export async function searchProfiles(query) {
+  if (!query || query.trim() === '') {
+    return { data: [], error: null }
+  }
+  const q = query.trim()
+  try {
+    // Search `profiles` by name or email (adjust fields if your table differs)
+    return await supabase
+      .from('profiles')
+      .select('id, name, email, avatar_url, bio')
+      .or(`name.ilike.%${q}%,email.ilike.%${q}%`)
+  } catch (err) {
+    return { data: null, error: err }
+  }
+}
