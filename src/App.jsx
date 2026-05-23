@@ -14,6 +14,7 @@ import Profile from './pages/Profile'
 
 
 
+
 import {
   getCurrentUser,
   onAuthStateChange,
@@ -56,8 +57,7 @@ function App() {
         <Route path="/explorer" element={<Explorer />} />
         <Route path="/recruitment" element={<Recruitment />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<Navigate to="/" replace />} />
-        <Route path="/register" element={<Navigate to="/" replace />} />
+
       </Routes>
     </div>
   )

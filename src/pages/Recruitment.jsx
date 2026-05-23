@@ -18,16 +18,11 @@ export default function Recruitment() {
   const [error, setError] = useState(null)
   const [requestedIds, setRequestedIds] = useState(new Set())
 
-  const getDisplayName = (profile) => profile?.name || profile?.email || 'Unknown'
-  const getFriendName = (friend) =>
-    friend.friend?.name ||
-    friend.friend?.email ||
-    friend.requested?.name ||
-    friend.requested?.email ||
-    friend.requester?.name ||
-    friend.requester?.email ||
-    friend.requested_id ||
-    friend.requester_id
+  const getDisplayName = (profile) => profile?.username || profile?.name || profile?.email || 'Unknown'
+  const getFriendName = (friend) => {
+    const otherProfile = friend.requested_id ? friend.requested : friend.requester
+    return otherProfile?.username || otherProfile?.name || otherProfile?.email || 'Unknown'
+  }
 
   useEffect(() => {
     async function loadCurrentUser() {

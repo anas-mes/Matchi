@@ -6,19 +6,13 @@ export default function FriendList({ friends = [], onRemove = () => {} }) {
   return (
     <div>
       {friends.map((f) => {
-        const friendName =
-          f.friend?.name ||
-          f.friend?.email ||
-          f.requested?.name ||
-          f.requested?.email ||
-          f.requester?.name ||
-          f.requester?.email ||
-          f.requested_id ||
-          f.requester_id
+        // Determine which profile object to use based on relationship
+        const otherProfile = f.requested_id ? f.requested : f.requester
+        const friendUsername = otherProfile?.username || otherProfile?.name || otherProfile?.email || 'Unknown'
 
         return (
           <div key={f.id} className="player-card" style={{ marginBottom: 12 }}>
-            <h4>{friendName}</h4>
+            <h4>{friendUsername}</h4>
             <div style={{ display: 'flex', gap: 8 }}>
               <button className="button button-secondary" onClick={() => onRemove(f.id)}>Remove</button>
             </div>

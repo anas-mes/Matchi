@@ -11,6 +11,7 @@ function Home({ user, onUserUpdate }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
   const [bio, setBio] = useState('')
   const [age, setAge] = useState('')
   const [avatarFile, setAvatarFile] = useState(null)
@@ -47,6 +48,7 @@ function Home({ user, onUserUpdate }) {
           setEmail('')
           setPassword('')
           setName('')
+          setUsername('')
           setBio('')
           setAge('')
           setAvatarFile(null)
@@ -66,6 +68,7 @@ function Home({ user, onUserUpdate }) {
           const updates = {
             email,
             name,
+            username,
             bio,
             age: age ? Number(age) : null,
             avatar_url: avatarUrl,
@@ -80,6 +83,7 @@ function Home({ user, onUserUpdate }) {
             setEmail('')
             setPassword('')
             setName('')
+            setUsername('')
             setBio('')
             setAge('')
             setAvatarFile(null)
@@ -155,6 +159,17 @@ function Home({ user, onUserUpdate }) {
                       placeholder="Full name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      type="text"
+                    />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Username</label>
+                    <input
+                      className="input"
+                      placeholder="Username (unique)"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                       type="text"
                     />
                   </div>

@@ -90,7 +90,7 @@ export async function fetchFriendRequests(userId) {
   try {
     return await supabase
       .from('friends')
-      .select('*')
+      .select('*, requester:requester_id(id,username,name,email), requested:requested_id(id,username,name,email)')
       .or(`requested_id.eq.${userId},requester_id.eq.${userId}`)
       .order('created_at', { ascending: false })
   } catch (err) {
@@ -131,7 +131,7 @@ export async function fetchFriends(userId) {
   try {
     return await supabase
       .from('friends')
-      .select('*')
+      .select('*, requester:requester_id(id,username,name,email), requested:requested_id(id,username,name,email)')
       .or(`and(requester_id.eq.${userId},status.eq.accepted),and(requested_id.eq.${userId},status.eq.accepted)`)
       .order('created_at', { ascending: false })
   } catch (err) {

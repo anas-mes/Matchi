@@ -13,9 +13,11 @@ export default function MembersPicker({ friends = [], selected = [], onChange = 
     <div>
       {friends.map((f) => {
         const id = f.user_id ?? f.requester_id ?? f.requested_id
+        const otherProfile = f.user_id ? f : (f.requested_id ? f.requested : f.requester)
+        const displayName = otherProfile?.username || otherProfile?.name || otherProfile?.email || id
         return (
           <label key={id} style={{ display: 'block', marginBottom: 8 }}>
-            <input type="checkbox" checked={selected.includes(id)} onChange={() => toggle(id)} /> {f.requester_email ?? f.requested_email ?? id}
+            <input type="checkbox" checked={selected.includes(id)} onChange={() => toggle(id)} /> {displayName}
           </label>
         )
       })}

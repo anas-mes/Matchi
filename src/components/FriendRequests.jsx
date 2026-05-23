@@ -6,11 +6,11 @@ export default function FriendRequests({ requests = [], onAccept = () => {}, onD
   return (
     <div>
       {requests.map((r) => {
-        const requesterName = r.requester?.name || r.requester?.email || r.requester_email || r.requester_id
+        const requesterUsername = r.requester?.username || r.requester?.name || r.requester?.email || 'Unknown'
 
         return (
           <div key={r.id} className="player-card" style={{ marginBottom: 12 }}>
-            <h4>{requesterName}</h4>
+            <h4>{requesterUsername}</h4>
             <p>Status: {r.status}</p>
             <div style={{ display: 'flex', gap: 8 }}>
               <button className="button button-primary" onClick={() => onAccept(r.id)}>Accept</button>
