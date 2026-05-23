@@ -100,7 +100,7 @@ function Home({ user, onUserUpdate }) {
       <main className="page page--hero">
         <section className="hero-panel">
           <div className="hero-copy">
-            <span className="eyebrow">Welcome to Matchi</span>
+            <span className="eyebrow">Welcome to Matchi - anti hergawa</span>
             <h1 className="hero-title">Find local football matches and connect with players.</h1>
             <p className="hero-description">
               Sign in or register to create and manage your profile, upload a picture, and join games nearby.
